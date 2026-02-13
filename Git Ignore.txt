@@ -1,0 +1,15 @@
+macOS system files
+
+.DS_Store
+
+Windows system files
+
+Thumbs.db
+
+VS Code settings (optional)
+
+.vscode/
+
+Node modules (if you ever add them later)
+
+node_modules/

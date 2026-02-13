@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Will You Be My Valentine?</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. VARIABLES & RESET --- */
+        :root {
+            /* Theme: Ocean Breeze with Red Accents */
+            --primary: #0984e3;      /* Vibrant Blue */
+            --primary-dark: #00cec9; /* Teal */
+            --accent-red: #ff4757;   /* New Red for Hearts */
+            --secondary: #6c5ce7;    /* Purple */
+            --text-main: #2d3436;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --font-head: 'Pacifico', cursive;
+            --font-body: 'Quicksand', sans-serif;
+            --btn-shadow: 0 8px 25px rgba(9, 132, 227, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-body);
+            /* Blue/Teal/Purple Gradient Background */
+            background: linear-gradient(-45deg, #74ebd5, #ACB6E5, #74ebd5, #9face6);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- 2a. INTRO ANIMATION: FLOATING BUBBLES --- */
+        .love-bubbles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: riseUp linear infinite;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .bubble::after {
+            content: '❤️'; 
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            opacity: 0.9;
+            filter: drop-shadow(0 2px 4px rgba(255, 71, 87, 0.3));
+        }
+
+        .bubble:nth-child(1) { left: 10%; width: 60px; height: 60px; animation-duration: 8s; animation-delay: 0s; }
+        .bubble:nth-child(2) { left: 25%; width: 40px; height: 40px; animation-duration: 12s; animation-delay: 2s; }
+        .bubble:nth-child(3) { left: 40%; width: 70px; height: 70px; animation-duration: 10s; animation-delay: 4s; }
+        .bubble:nth-child(4) { left: 60%; width: 50px; height: 50px; animation-duration: 14s; animation-delay: 1s; }
+        .bubble:nth-child(5) { left: 80%; width: 65px; height: 65px; animation-duration: 9s; animation-delay: 3s; }
+        .bubble:nth-child(6) { left: 90%; width: 45px; height: 45px; animation-duration: 11s; animation-delay: 5s; }
+
+        @keyframes riseUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+        }
+
+        /* --- 2b. SUCCESS ANIMATION: RAIN & BALLOONS --- */
+        body.party-mode {
+            animation: discoFlash 3s infinite alternate;
+        }
+
+        @keyframes discoFlash {
+            0% { background: #74ebd5; }
+            50% { background: #ff9a9e; } /* Add a pink flush for romance */
+            100% { background: #a29bfe; }
+        }
+
+        .rain-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .rain-item {
+            position: absolute;
+            top: -50px;
+            font-size: 2rem;
+            animation: fallDown linear infinite;
+        }
+
+        /* New Balloon Animation for Success */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            font-size: 3rem;
+            animation: floatBalloon linear infinite;
+            opacity: 0.8;
+            z-index: 2;
+        }
+
+        @keyframes fallDown {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0.8; }
+        }
+
+        /* --- 3. GLASS CARD CONTAINER --- */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border);
+            padding: 2.5rem 2rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            min-height: 520px; 
+            z-index: 10;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Special Card State for Success */
+        .card.success-mode {
+            box-shadow: 0 0 50px rgba(255, 71, 87, 0.6);
+            border-color: rgba(255, 71, 87, 0.4);
+            animation: cardPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes cardPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- 4. TYPOGRAPHY --- */
+        h1 {
+            font-family: var(--font-head);
+            color: var(--primary);
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+            line-height: 1.2;
+            transition: color 0.3s;
+        }
+
+        .success-text h1 {
+            color: var(--accent-red);
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+        }
+
+        p {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .success-text p {
+            font-size: 1.2rem;
+            color: #2d3436;
+            animation: slideUpFade 1s 0.5s ease both; /* Delay for drama */
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideUpFade {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- 5. MEDIA CONTAINER --- */
+        .media-container {
+            width: 100%;
+            height: 220px;
+            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.8);
+        }
+
+        .media-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            opacity: 0; 
+            transition: opacity 0.5s ease;
+            transform: scale(0.9);
+        }
+
+        .media-container img.loaded {
+            opacity: 1;
+        }
+
+        .animate-bounce-slow {
+            animation: bounceSlow 3s infinite ease-in-out;
+        }
+
+        @keyframes bounceSlow {
+            0%, 100% { transform: translateY(0) scale(0.9); }
+            50% { transform: translateY(-10px) scale(0.95); }
+        }
+
+        /* Fallback */
+        .css-heart-fallback {
+            display: none;
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-red);
+            transform: rotate(-45deg);
+            animation: heartbeat 1.2s infinite;
+        }
+        .css-heart-fallback::before, .css-heart-fallback::after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-red);
+            border-radius: 50%;
+        }
+        .css-heart-fallback::before { top: -25px; left: 0; }
+        .css-heart-fallback::after { left: 25px; top: 0; }
+
+        @keyframes heartbeat {
+            0% { transform: rotate(-45deg) scale(1); }
+            15% { transform: rotate(-45deg) scale(1.1); }
+            30% { transform: rotate(-45deg) scale(1); }
+            45% { transform: rotate(-45deg) scale(1.1); }
+            100% { transform: rotate(-45deg) scale(1); }
+        }
+
+        /* --- 6. BUTTONS --- */
+        .btn-group {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        button {
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 20;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-yes {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: var(--btn-shadow);
+        }
+
+        .btn-yes:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1) rotate(-2deg);
+        }
+
+        .btn-no {
+            background-color: white;
+            color: var(--text-main);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.15s ease-out; 
+        }
+
+        /* Animation: Shake the No button before it moves */
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .shaking {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* --- 7. MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-modal {
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-modal-yes { background: var(--secondary); color: white; }
+        .btn-modal-no { background: #dfe6e9; color: var(--text-main); }
+
+
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .confetti-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            .card { padding: 1.5rem; min-height: 450px; }
+            .btn-group { flex-direction: column; align-items: center; gap: 12px; height: auto; min-height: 120px; }
+            .btn-group button { width: 100%; max-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Intro Bubbles -->
+    <div class="love-bubbles" id="intro-bg">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <!-- Success Rain & Balloons -->
+    <div class="rain-container hidden" id="success-bg"></div>
+
+    <!-- Confetti -->
+    <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+    <!-- Modal (Hidden by default) -->
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content" id="modal-content-box">
+            <p id="modal-text" style="font-size: 1.2rem; margin-bottom: 0;">Are you not sure?</p>
+            <div class="modal-buttons" id="modal-buttons">
+                <button class="btn-modal btn-modal-yes" onclick="closeModal()">Yes</button>
+                <button class="btn-modal btn-modal-no" onclick="triggerModalError()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" id="card">
+        
+        <!-- Screen 1: Question -->
+        <div id="screen-question">
+            <div class="media-container">
+                <img src="https://media1.tenor.com/m/nZt-Wc2P9L8AAAAC/mocha-bear.gif" 
+                     alt="Cute animated bear asking a question"
+                     class="animate-bounce-slow"
+                     onload="this.classList.add('loaded')"
+                     onerror="this.style.display='none'; document.getElementById('fallback-heart-q').style.display='block'">
+                <div id="fallback-heart-q" class="css-heart-fallback"></div>
+            </div>
+
+            <h1>Will you be my Valentine?</h1>
+            <p>I promise to buy you sinigang! 🍲</p>
+            
+            <div class="btn-group" id="btn-group-stage">
+                <button class="btn-yes" id="yes-btn">Yes!</button>
+                <button class="btn-no" id="no-btn">No</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Success -->
+        <div id="screen-success" class="hidden success-text">
+            <div class="media-container">
+                <img src="https://media1.tenor.com/m/JcaC6j49aV0AAAAC/mocha-bear-hearts.gif" 
+                     alt="Excited celebration"
+                     onload="this.classList.add('loaded')"
+                     onerror="this.style.display='none'; document.getElementById('fallback-heart-s').style.display='block'">
+                <div id="fallback-heart-s" class="css-heart-fallback"></div>
+            </div>
+
+            <h1>You've stolen my heart! 💖</h1>
+            <p>I promise to make you the happiest Valentine in the world. I love you so much! 🥰</p>
+            
+            <button class="btn-yes" onclick="location.reload()">Replay</button>
+        </div>
+
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const screenQuestion = document.getElementById('screen-question');
+        const screenSuccess = document.getElementById('screen-success');
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const introBg = document.getElementById('intro-bg');
+        const successBg = document.getElementById('success-bg');
+        
+        // Modal Elements
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalText = document.getElementById('modal-text');
+        const modalButtons = document.getElementById('modal-buttons');
+
+        let isDodging = false;
+        let lastMoveTime = 0;
+        let dodgeCount = 0;
+        const MAX_DODGES = 5;
+
+        // --- NO BUTTON LOGIC ---
+        function handleNoInteraction(e) {
+            if (dodgeCount < MAX_DODGES) {
+                if (e && e.type === 'touchstart') e.preventDefault();
+                
+                // Add shake class briefly
+                noBtn.classList.add('shaking');
+                setTimeout(() => noBtn.classList.remove('shaking'), 300);
+                
+                moveButton();
+            } else {
+                // If we've reached max dodges, RESET to "No" and Normal Size
+                noBtn.innerText = "No";
+                noBtn.style.transform = "scale(1) rotate(0deg)";
+                noBtn.style.position = "relative"; // Optional: bring it back to flow or keep absolute
+                // Keeping absolute is safer for layout, but resetting transform is key.
+            }
+        }
+
+        function moveButton() {
+            const now = Date.now();
+            if (now - lastMoveTime < 50) return;
+            lastMoveTime = now;
+            
+            dodgeCount++;
+
+            const texts = [
+                "No", "Too slow!", "I'm fast!", 
+                "Think again!", "Missed me!", "Try harder!", 
+                "Nope!", "Really?", "Don't do this!"
+            ];
+            
+            if (Math.random() < 0.2) {
+                noBtn.innerText = "No";
+            } else {
+                noBtn.innerText = texts[Math.floor(Math.random() * texts.length)];
+            }
+
+            if (!isDodging) {
+                noBtn.style.position = 'absolute';
+                isDodging = true;
+            }
+
+            // Animation: Shrink (Scale < 1) & Rotate
+            // Shrinks to between 0.6 and 0.8
+            const randomScale = 0.6 + Math.random() * 0.2;
+            const randomRotate = -20 + Math.random() * 40; // More rotation
+            noBtn.style.transform = `scale(${randomScale}) rotate(${randomRotate}deg)`;
+
+            const padding = 20; 
+            const maxX = card.clientWidth - noBtn.offsetWidth - padding;
+            const maxY = card.clientHeight - noBtn.offsetHeight - padding;
+
+            const randomX = Math.max(padding, Math.min(Math.random() * maxX, maxX));
+            const randomY = Math.max(padding, Math.min(Math.random() * maxY, maxY));
+
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        }
+
+        noBtn.addEventListener('mouseover', handleNoInteraction);
+        noBtn.addEventListener('touchstart', handleNoInteraction, { passive: false });
+        noBtn.addEventListener('focus', handleNoInteraction);
+        
+        noBtn.addEventListener('click', (e) => {
+            if (dodgeCount < MAX_DODGES) {
+                e.preventDefault();
+                moveButton();
+            } else {
+                e.preventDefault();
+                openModal();
+            }
+        });
+
+        // --- MODAL FUNCTIONS ---
+        function openModal() {
+            modalOverlay.classList.remove('hidden');
+            modalText.innerText = "Are you not sure?";
+            modalButtons.innerHTML = `
+                <button class="btn-modal btn-modal-yes" onclick="closeModal()">Yes</button>
+                <button class="btn-modal btn-modal-no" onclick="triggerModalError()">No</button>
+            `;
+        }
+
+        function closeModal() {
+            modalOverlay.classList.add('hidden');
+        }
+
+        function triggerModalError() {
+            modalText.innerText = "Unfortunately, from this user only yes answer is possible, please try again.";
+            modalButtons.innerHTML = `
+                <button class="btn-modal btn-modal-yes" onclick="closeModal()">Try Again</button>
+            `;
+        }
+
+        window.addEventListener('resize', () => {
+            if (dodgeCount < MAX_DODGES) {
+                isDodging = false;
+                noBtn.style.position = 'relative';
+                noBtn.style.left = 'auto';
+                noBtn.style.top = 'auto';
+                noBtn.style.transform = 'none';
+            }
+        });
+
+        // --- YES BUTTON LOGIC ---
+        yesBtn.addEventListener('click', () => {
+            screenQuestion.classList.add('hidden');
+            screenSuccess.classList.remove('hidden');
+            
+            // Add Global Animations
+            introBg.classList.add('hidden'); 
+            successBg.classList.remove('hidden');
+            document.body.classList.add('party-mode');
+            
+            // Add Card Heartbeat
+            card.classList.add('success-mode');
+
+            createRainAndBalloons();
+            fireConfetti();
+        });
+
+        // --- CREATIVE RAIN & BALLOONS ---
+        function createRainAndBalloons() {
+            const emojis = ['💙', '💖', '❤️', '🍲', '✨', '🌊', '🦋', '🥄'];
+            const container = document.getElementById('success-bg');
+            
+            // 1. Rain Drops
+            for (let i = 0; i < 30; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('rain-item');
+                drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = Math.random() * 2 + 3 + 's'; 
+                drop.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(drop);
+            }
+
+            // 2. Rising Balloons
+            const balloons = ['🎈', '🏩', '💌'];
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+                balloon.innerText = balloons[Math.floor(Math.random() * balloons.length)];
+                balloon.style.left = Math.random() * 100 + 'vw';
+                balloon.style.animationDuration = Math.random() * 5 + 5 + 's'; // 5-10s
+                balloon.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(balloon);
+            }
+        }
+
+        // --- CANVAS CONFETTI ---
+        function fireConfetti() {
+            const ctx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+
+            const pieces = [];
+            const colors = ['#0984e3', '#6c5ce7', '#00cec9', '#fdcb6e', '#ff4757'];
+
+            for (let i = 0; i < 200; i++) {
+                pieces.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 8 + 4,
+                    angle: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                let activePieces = 0;
+                pieces.forEach(p => {
+                    if (p.y <= confettiCanvas.height + 20) {
+                        activePieces++;
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.angle * Math.PI / 180);
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                        ctx.restore();
+                        p.y += p.speed;
+                        p.angle += p.rotationSpeed;
+                    }
+                });
+                if (activePieces > 0) requestAnimationFrame(draw);
+            }
+            draw();
+        }
+    </script>
+</body>
+</html>
